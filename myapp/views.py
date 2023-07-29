@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import User
 
@@ -27,3 +27,10 @@ def new_user_view(request):
         return redirect('users')
 
     return render(request, 'new_user.html')
+
+# users/<id>
+def user_detail_view(request, id):
+    
+    user = get_object_or_404(User, id=id)
+
+    return render(request, 'user_detail.html', {'user': user})

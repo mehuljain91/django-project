@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .models import User
 
 # Create your views here.
@@ -30,7 +30,9 @@ def new_user_view(request):
 
 # users/<id>
 def user_detail_view(request, id):
-    
-    user = get_object_or_404(User, id=id)
-
-    return render(request, 'user_detail.html', {'user': user})
+    try:
+        user = get_object_or_404(User, id=id)
+    except User.DoesNotExist:
+        raise Http404("User does not exist.")
+    else:
+        return render(request, 'user_detail.html', {'user': user})
